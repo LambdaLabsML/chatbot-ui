@@ -51,13 +51,19 @@ const handler = async (req: Request): Promise<Response> => {
     const models: OpenAIModel[] = json.data
       .map((model: any) => {
         const model_name = (OPENAI_API_TYPE === 'azure') ? model.model : model.id;
-        for (const [key, value] of Object.entries(OpenAIModelID)) {
-          if (value === model_name) {
-            return {
-              id: model.id,
-              name: OpenAIModels[value].name,
-            };
-          }
+        const maybeModelEntry = Object.entries(OpenAIModelID).find(([key, val]) => val === model_name);
+        if (maybeModelEntry !== undefined) {
+          return {
+            id: model.id,
+            name: OpenAIModels[maybeModelEntry[1]].name,
+          };
+        } else {
+          return {
+            id: model.id,
+            // model.owned_by comes from the OpenAI API spec:
+            // https://platform.openai.com/docs/api-reference/models/list
+            name: `${model.owned_by} - ${model.id}`,
+          };
         }
       })
       .filter(Boolean);
