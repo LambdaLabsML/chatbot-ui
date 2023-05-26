@@ -1,0 +1,4 @@
+steps:
+  - command: ".buildkite/build_docker.sh"
+    agents:
+      queue: "oci"
