@@ -4,7 +4,7 @@ set -euo pipefail
 
 REGION="us-west-2"
 REGISTRY="921575574570.dkr.ecr.us-west-2.amazonaws.com"
-PROJECT="lambda-chatbot-ui"
+PROJECT="chatbot-ui"
 BRANCH_CLEAN=${BUILDKITE_BRANCH/\//_}
 
 docker build -t "$REGISTRY/$PROJECT:${BRANCH_CLEAN}" .
